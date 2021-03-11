@@ -1,0 +1,83 @@
+
+
+CREATE DATABASE m_interventions;
+CREATE SCHEMA mecaniques;
+
+
+/* client */ 
+
+
+CREATE TABLE mecaniques.client(num_client SERIAL PRIMARY KEY , civ VARCHAR(30) NOT NULL , prenom_client VARCHAR(30) NOT NULL , nom_client VARCHAR(30) NOT NULL , date_naissance DATE , adresse VARCHAR(150) NOT NULL , tel_prof VARCHAR(15) ,tel_priv VARCHAR(15) , fax VARCHAR(15));
+
+INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv)             VALUES('Mme' , 'Cherifa' , 'MOHABOUBA' , '1957-08-08','CITE 1013 LOGTS BT 61 Alger ','0561381813',' 0562458714' );
+
+INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv)             VALUES('Mme' , 'Lamia' , 'TAHMI' , '1955-12-31','CITE BECHEDJARAH BATIMENT 38-Bach Djerrah-Alger ','0562467849',' 0561392487' );
+
+INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv , fax )      VALUES ('Mle', 'Ghania', 'DIAF AMROUNI', '1955-12-31', '43 RUE ABDERRAHMANE SBAA BELLE VUE-EL HARRACH-ALGER', '0523894562', '0619430945',      '0562784254');
+
+
+/* employe */ 
+
+CREATE TABLE mecaniques.employe(num_employe SERIAL PRIMARY KEY ,nom_emp VARCHAR(30) NOT NULL ,  prenom_emp VARCHAR(30) NOT NULL  , categorie VARCHAR(20) , salaire INTEGER NOT NULL);
+
+ALTER SEQUENCE mecaniques.employe_num_employe_seq RESTART WITH 53;
+
+INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('LACHEMI' ,'Bouzid','Mecanicien', 25000);
+
+INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('BOUCHEMLA' ,'Elias','Assistant', 10000);
+
+INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('HADJ' ,'Zouhir','Assistant', 12000);
+
+
+/* marque */ 
+ 
+CREATE TABLE mecaniques.marque(num_marque SERIAL PRIMARY KEY ,marque VARCHAR(30) NOT NULL , pays VARCHAR(30) NOT NULL);
+
+INSERT INTO mecaniques.marque( marque , pays) VALUES('LAMBORGHINI' ,'ITALIE');
+
+INSERT INTO mecaniques.marque( marque , pays) VALUES('AUDI' ,'ALLEMAGNE');
+
+INSERT INTO mecaniques.marque( marque , pays) VALUES('ROLLS-ROYCE' ,'GRANDE-BRETAGNE');
+
+/* modele */
+
+CREATE TABLE mecaniques.modele(num_modele SERIAL PRIMARY KEY ,num_marque INTEGER REFERENCES mecaniques.marque (num_marque) , modele VARCHAR(100) NOT NULL);
+
+ALTER SEQUENCE mecaniques.modele_num_modele_seq RESTART WITH 2;
+
+INSERT INTO mecaniques.modele(num_marque , modele) VALUES(1 ,'Diablo');
+
+INSERT INTO mecaniques.modele(num_marque , modele) VALUES(2 ,'Serie 5');
+
+INSERT INTO mecaniques.modele(num_marque , modele) VALUES(3 ,'NSX');
+
+/*vehicule*/
+
+CREATE TABLE mecaniques.vehicule(num_vehicule SERIAL PRIMARY KEY ,num_client INTEGER REFERENCES mecaniques.client(num_client) , num_modele INTEGER REFERENCES mecaniques.modele(num_modele) , num_immat VARCHAR(20) NOT NULL, annee SMALLINT NOT NULL );
+
+INSERT INTO mecaniques.vehicule(num_vehicule , num_client ,num_modele , num_immat, annee) VALUES(1 ,2 , 2 , '0012519216' , 1992);
+
+INSERT INTO mecaniques.vehicule(num_vehicule , num_client ,num_modele , num_immat, annee) VALUES(2 ,3 , 3 , '0124219316' , 1993);
+
+
+ 
+ 
+ /* interventions */
+
+ 
+ 
+CREATE TABLE mecaniques.interventions(num_interventions SERIAL PRIMARY KEY ,num_vehicule INTEGER REFERENCES mecaniques.vehicule(num_vehicule) , type_intervention VARCHAR(100) NOT NULL, date_debinterv DATE NOT NULL , date_fininterv DATE NOT NULL,cout_initerv VARCHAR(10));
+
+INSERT INTO mecaniques.interventions(num_vehicule , type_intervention , date_debinterv , date_fininterv , cout_initerv) VALUES(1 ,'Reparation' , '2006-02-25 09:00:00' , '2006-02-26 12:00:00' , 30000);
+
+INSERT INTO mecaniques.interventions(num_vehicule , type_intervention , date_debinterv , date_fininterv , cout_initerv) VALUES(2 ,'Reparation' , '2006-02-23 09:00:00' , '2006-02-24 18:00:00' , 10000);
+
+
+
+/* intervenants */
+
+CREATE TABLE mecaniques.intervenants(num_interventions INTEGER REFERENCES mecaniques.interventions(num_interventions),num_employe INTEGER REFERENCES mecaniques.employe(num_employe),date_debut DATE NOT NULL , date_fin DATE NOT NULL , PRIMARY KEY (num_interventions , num_employe));
+
+INSERT INTO mecaniques.intervenants(num_interventions , num_employe , date_debut , date_fin) VALUES(1 ,55 , '2006-02-28 09:00:00' , '2006-02-28 12:00:00');
+
+INSERT INTO mecaniques.intervenants(num_interventions , num_employe , date_debut , date_fin) VALUES(2 ,53 , '2006-02-26 09:00:00' , '2006-02-26 12:00:00');

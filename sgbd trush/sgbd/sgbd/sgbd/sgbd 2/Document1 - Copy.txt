@@ -1,0 +1,429 @@
+
+
+postgres-# drop database mydb;
+ERROR:  syntax error at or near "drop"
+LINE 2: drop database mydb;
+        ^
+postgres=# Drop database mydb;
+DROP DATABASE
+postgres=# create database mydb;
+CREATE DATABASE
+postgres=# \c mydb
+You are now connected to database "mydb" as user "postgres".
+mydb=# CREATE TABLE noo(id  AUTOINCREMENT , name VARCHAR(40), age INT , PRIMARY KEY (id));
+ERROR:  type "autoincrement" does not exist
+LINE 1: CREATE TABLE noo(id  AUTOINCREMENT , name VARCHAR(40), age I...
+                             ^
+mydb=# CREATE TABLE table_name(
+mydb(#     id SERIAL
+mydb(# );
+CREATE TABLE
+mydb=# CREATE TABLE table( id SERIAL , name varchar(20));
+ERROR:  syntax error at or near "table"
+LINE 1: CREATE TABLE table( id SERIAL , name varchar(20));
+                     ^
+mydb=# CREATE TABLE tabl( id SERIAL , name varchar(20));
+CREATE TABLE
+mydb=# insert into ('ali');
+ERROR:  syntax error at or near "("
+LINE 1: insert into ('ali');
+                    ^
+mydb=# insert into ('ali');
+ERROR:  syntax error at or near "("
+LINE 1: insert into ('ali');
+                    ^
+mydb=# insert into (1,'ali');
+ERROR:  syntax error at or near "("
+LINE 1: insert into (1,'ali');
+                    ^
+mydb=# insert into tabl ('ali');
+ERROR:  syntax error at or near "'ali'"
+LINE 1: insert into tabl ('ali');
+                          ^
+mydb=# insert into tabl (1,'ali');
+ERROR:  syntax error at or near "1"
+LINE 1: insert into tabl (1,'ali');
+                          ^
+mydb=# Insert into tabl (1,'ali');
+ERROR:  syntax error at or near "1"
+LINE 1: Insert into tabl (1,'ali');
+                          ^
+mydb=# Insert into tabl (155,'ali');
+ERROR:  syntax error at or near "155"
+LINE 1: Insert into tabl (155,'ali');
+                          ^
+mydb=# Insert into tabl ('ali');
+ERROR:  syntax error at or near "'ali'"
+LINE 1: Insert into tabl ('ali');
+                          ^
+mydb=# Insert into tabl (ali);
+ERROR:  syntax error at or near ";"
+LINE 1: Insert into tabl (ali);
+                              ^
+mydb=# Insert into tabl values(ali);
+ERROR:  column "ali" does not exist
+LINE 1: Insert into tabl values(ali);
+                                ^
+mydb=# Insert into tabl values('ali');
+ERROR:  invalid input syntax for type integer: "ali"
+LINE 1: Insert into tabl values('ali');
+                                ^
+mydb=# Insert into tabl values(1,'ali');
+INSERT 0 1
+mydb=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner
+--------+------------+-------+----------
+ public | tabl       | table | postgres
+ public | table_name | table | postgres
+(2 rows)
+
+
+mydb=# select * from tabl
+mydb-# select * from tabl
+mydb-# Insert into tabl values(1,'ali');
+ERROR:  syntax error at or near "select"
+LINE 2: select * from tabl
+        ^
+mydb=# select * from tabl;
+ id | name
+----+------
+  1 | ali
+(1 row)
+
+
+mydb=# Insert into tabl values('ali');
+ERROR:  invalid input syntax for type integer: "ali"
+LINE 1: Insert into tabl values('ali');
+                                ^
+mydb=# Insert into tabl values(5,'ali');
+INSERT 0 1
+mydb=# select * from tabl;
+ id | name
+----+------
+  1 | ali
+  5 | ali
+(2 rows)
+
+
+mydb=# Insert into tabl(name) values('ali');
+INSERT 0 1
+mydb=# select * from tabl;
+ id | name
+----+------
+  1 | ali
+  5 | ali
+  1 | ali
+(3 rows)
+
+
+mydb=# Insert into tabl(name) values('ahmed');
+INSERT 0 1
+mydb=# select * from tabl;
+ id | name
+----+-------
+  1 | ali
+  5 | ali
+  1 | ali
+  2 | ahmed
+(4 rows)
+
+
+mydb=# \c department
+You are now connected to database "department" as user "postgres".
+department=# CREATE TABLE etudiants(id SERIAL PRIMARY KEY , name VARCHAR(20) , age INT );
+CREATE TABLE
+department=# DROP TABLE IF EXISTS etudiants;
+DROP TABLE
+department=# ALTER TABLE customers
+department-# ALTER TABLE customers ;
+ERROR:  syntax error at or near "TABLE"
+LINE 2: ALTER TABLE customers ;
+              ^
+department=# ALTER TABLE customers ALTER TABLE customers
+department-# alter table customers ADD COLUMN contact_name varchar(30) not null;
+ERROR:  syntax error at or near "TABLE"
+LINE 1: ALTER TABLE customers ALTER TABLE customers
+                                    ^
+department=# CREATE TABLE etudiants(id SERIAL PRIMARY KEY , name VARCHAR(20) , age INT );
+CREATE TABLE
+department=# DROP TABLE IF EXISTS etudiants;
+DROP TABLE
+department=# CREATE TABLE etudiants(id SERIAL PRIMARY KEY , name VARCHAR(20) , age INT );
+CREATE TABLE
+department=# ALTER TABLE etudiants ADD COLUMN lastname varchar(30) not null;
+ALTER TABLE
+department=# INSERT INTO etudiants(name, age , lastname) values('ahmed',25,'ali');
+INSERT 0 1
+department=# INSERT INTO etudiants(name, age , lastname) values('ibrahim',22,'ayoub');
+INSERT 0 1
+department=# INSERT INTO etudiants(name, age , lastname) values('islem',27,'abdou');
+INSERT 0 1
+department=# SELECT * FROM etudiants;
+ id |  name   | age | lastname
+----+---------+-----+----------
+  1 | ahmed   |  25 | ali
+  2 | ibrahim |  22 | ayoub
+  3 | islem   |  27 | abdou
+(3 rows)
+
+
+department=# UPDATE etudiants SET name = 'reda' , age = 30 WHERE id = 2 ;
+UPDATE 1
+department=# SELECT * FROM etudiants;
+ id | name  | age | lastname
+----+-------+-----+----------
+  1 | ahmed |  25 | ali
+  3 | islem |  27 | abdou
+  2 | reda  |  30 | ayoub
+(3 rows)
+
+
+department=# DELETE FROM etudiants WHERE id = 3 ;
+DELETE 1
+department=# SELECT * FROM etudiants;
+ id | name  | age | lastname
+----+-------+-----+----------
+  1 | ahmed |  25 | ali
+  2 | reda  |  30 | ayoub
+(2 rows)
+
+
+department=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+
+department=# CREATE SCHEMA m_interventions;
+CREATE SCHEMA
+department=# \c m_interventions
+FATAL:  database "m_interventions" does not exist
+Previous connection kept
+department=# \c m_interventions;
+FATAL:  database "m_interventions" does not exist
+Previous connection kept
+department=# CREATE SCHEMA m_interventions;
+CREATE SCHEMA
+department=# ]قخح SCHEMA m_interventions;
+ERROR:  syntax error at or near "]"
+LINE 1: ]??? SCHEMA m_interventions;
+        ^
+department=# rop SCHEMA m_interventions;
+ERROR:  syntax error at or near "rop"
+LINE 1: rop SCHEMA m_interventions;
+        ^
+department=# drop SCHEMA m_interventions;
+DROP SCHEMA
+department=# CREATE DATABASE m_interventions;
+CREATE DATABASE
+department=# \c m_interventions;
+You are now connected to database "m_interventions" as user "postgres".
+m_interventions=# CREATE SCHEMA mecaniques;
+CREATE SCHEMA
+m_interventions=# CREATE TABLE mecaniques.client(num_client SERIAL PRIMARY KEY , civ VARCHAR(30) NOT NULL , prenom_client VARCHAR(30) NOT NULL , nom_client VARCHAR(30) NOT NULL , date_naissance DATE , adresse VARCHAR(150) NOT NULL , tel_prof VARCHAR(15) ,tel_priv VARCHAR(15) , fax VARCHAR(15));
+CREATE TABLE
+m_interventions=#
+
+
+
+**************************************************
+**************************************************
+
+**************************************************
+**************************************************
+
+
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.client(num_client SERIAL PRIMARY KEY , civ VARCHAR(30) NOT NULL , prenom_client VARCHAR(30) NOT NULL , nom_client VARCHAR(30) NOT NULL , date_naissance DATE , adresse VARCHAR(150) NOT NULL , tel_prof VARCHAR(15) ,tel_priv VARCHAR(15) , fax VARCHAR(15));
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv)             VALUES('Mme' , 'Cherifa' , 'MOHABOUBA' , '1957-08-08','CITE 1013 LOGTS BT 61 Alger ','0561381813',' 0562458714' );
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv)             VALUES('Mme' , 'Lamia' , 'TAHMI' , '1955-12-31','CITE BECHEDJARAH BATIMENT 38-Bach Djerrah-Alger ','0562467849',' 0561392487' );
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.client(civ , prenom_client , nom_client , date_naissance , adresse , tel_prof , tel_priv , fax )      VALUES ('Mle', 'Ghania', 'DIAF AMROUNI', '1955-12-31', '43 RUE ABDERRAHMANE SBAA BELLE VUE-EL HARRACH-ALGER', '0523894562', '0619430945',      '0562784254');
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.client;
+
+
+
+
+
+**************************************
+**************************************************
+
+
+
+ERROR:  relation "mecaniques_employe_num_employe_seq" does not exist
+m_interventions=# ALTER SEQUENCE mecaniques.employe_num_employe_seq RESTART WITH 53;
+ALTER SEQUENCE
+m_interventions=# drop table mecaniques.employe;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.employe(num_employe SERIAL PRIMARY KEY ,nom_emp VARCHAR(30) NOT NULL ,  prenom_emp VARCHAR(30) NOT NULL  , categorie VARCHAR(20) , salaire INTEGER NOT NULL);
+CREATE TABLE
+m_interventions=# ALTER SEQUENCE mecaniques.employe_num_employe_seq RESTART WITH 53;
+ALTER SEQUENCE
+m_interventions=# INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('LACHEMI' ,'Bouzid','Mecanicien', 25000);
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('BOUCHEMLA' ,'Elias','Assistant', 10000);
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.employe(nom_emp , prenom_emp , categorie , salaire) VALUES('HADJ' ,'Zouhir','Assistant', 12000);
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.employe;
+ num_employe |  nom_emp  | prenom_emp | categorie  | salaire
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ *******************************************************
+ ****************************************************
+ 
+ 
+ 
+ 
+ 
+
+
+m_interventions=# CREATE TABLE mecaniques.marque(num_marque SERIAL PRIMARY KEY ,marque VARCHAR(30) NOT NULL , pays VARCHAR(30) NOT NULL);
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.employe( marque , pays) VALUES('LAMBORGHINI' ,'ITALIE');
+ERROR:  column "marque" of relation "employe" does not exist
+LINE 1: INSERT INTO mecaniques.employe( marque , pays) VALUES('LAMBO...
+                                        ^
+m_interventions=# drop table mecaniques.MARQUE;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.marque(num_marque SERIAL PRIMARY KEY ,marque VARCHAR(30) NOT NULL , pays VARCHAR(30) NOT NULL);
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.employe( marque , pays) VALUES('LAMBORGHINI' ,'ITALIE');
+ERROR:  column "marque" of relation "employe" does not exist
+LINE 1: INSERT INTO mecaniques.employe( marque , pays) VALUES('LAMBO...
+                                        ^
+m_interventions=# drop table mecaniques.MARQUE;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.marque(num_marque SERIAL PRIMARY KEY ,marque VARCHAR(30) NOT NULL , pays VARCHAR(30) NOT NULL);
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.marque( marque , pays) VALUES('LAMBORGHINI' ,'ITALIE');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.marque( marque , pays) VALUES('AUDI' ,'ALLEMAGNE');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.marque( marque , pays) VALUES('ROLLS-ROYCE' ,'GRANDE-BRETAGNE');
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.marque;
+ num_marque |   marque    |      pays
+------------+-------------+-----------------
+          1 | LAMBORGHINI | ITALIE
+          2 | AUDI        | ALLEMAGNE
+          3 | ROLLS-ROYCE | GRANDE-BRETAGNE
+(3 rows)
+
+
+m_interventions=# CREATE TABLE mecaniques.modele(num_modele SERIAL PRIMARY KEY ,num_marque INTEGER REFERENCES mecaniques.marque (num_marque) , modele VARCHAR(100) NOT NULL);
+CREATE TABLE
+m_interventions=# ALTER SEQUENCE mecaniques.modele_num_modele_seq RESTART WITH 2;
+ALTER SEQUENCE
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(1 ,'Diablo');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(2 ,'Serie 5');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(10 ,'NSX');
+ERROR:  insert or update on table "modele" violates foreign key constraint "modele_num_marque_fkey"
+DETAIL:  Key (num_marque)=(10) is not present in table "marque".
+m_interventions=# drop table mecaniques.modele;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.modele(num_modele SERIAL PRIMARY KEY ,num_marque INTEGER REFERENCES mecaniques.marque (num_marque) , modele VARCHAR(100) NOT NULL);
+CREATE TABLE
+m_interventions=# ALTER SEQUENCE mecaniques.modele_num_modele_seq RESTART WITH 2;
+ALTER SEQUENCE
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(1 ,'Diablo');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(2 ,'Serie 5');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(3 ,'NSX');
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.modele;
+ num_modele | num_marque | modele
+------------+------------+---------
+          2 |          1 | Diablo
+          3 |          2 | Serie 5
+          4 |          3 | NSX
+(3 rows)
+
+
+m_interventions=# CREATE TABLE mecaniques.vehicule(num_vehicule SERIAL PRIMARY KEY ,num_client INTEGER REFERENCES mecaniques.client(num_client) , num_modele INTEGER REFERENCES mecaniques.modele(num_modele) , num_immat VARCHAR(20) NOT NULL, annee SMALLINT NOT NULL );
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.vehicule(num_vehicule , num_client ,num_modele , num_immat, annee) VALUES(1 ,2 , 6 , '0012519216' , 1992);
+ERROR:  insert or update on table "vehicule" violates foreign key constraint "vehicule_num_modele_fkey"
+DETAIL:  Key (num_modele)=(6) is not present in table "modele".
+m_interventions=# drop table mecaniques.vehicule;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.vehicule(num_vehicule SERIAL PRIMARY KEY ,num_client INTEGER REFERENCES mecaniques.client(num_client) , num_modele INTEGER REFERENCES mecaniques.modele(num_modele) , num_immat VARCHAR(20) NOT NULL, annee SMALLINT NOT NULL );
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.modele(num_marque , modele) VALUES(6 ,'NSX');
+ERROR:  insert or update on table "modele" violates foreign key constraint "modele_num_marque_fkey"
+DETAIL:  Key (num_marque)=(6) is not present in table "marque".
+m_interventions=# drop table mecaniques.vehicule;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.vehicule(num_vehicule SERIAL PRIMARY KEY ,num_client INTEGER REFERENCES mecaniques.client(num_client) , num_modele INTEGER REFERENCES mecaniques.modele(num_modele) , num_immat VARCHAR(20) NOT NULL, annee SMALLINT NOT NULL );
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.vehicule(num_vehicule , num_client ,num_modele , num_immat, annee) VALUES(1 ,2 , 2 , '0012519216' , 1992);
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.vehicule(num_vehicule , num_client ,num_modele , num_immat, annee) VALUES(2 ,3 , 3 , '0124219316' , 1993);
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.vehicule;
+ num_vehicule | num_client | num_modele | num_immat  | annee
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ****************************************
+ *****************************************
+ 
+ 
+ 
+ 
+ 
+ m_interventions=# CREATE TABLE mecaniques.interventions(num_interventions SERIAL PRIMARY KEY ,num_vehicule INTEGER REFERENCES mecaniques.vehicule(num_vehicule) , type_intervention VARCHAR(100) NOT NULL, date_debinterv DATE NOT NULL , date_fininterv DATE NOT NULL,cout_initerv VARCHAR(10));
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.interventions(num_vehicule , type_intervention , date_debinterv , date_fininterv , cout_initerv) VALUES(1 ,'Reparation' , '2006-02-25 09:00:00' , '2006-02-26 12:00:00' , 30000);
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.interventions(num_vehicule , type_intervention , date_debinterv , date_fininterv , cout_initerv) VALUES(2 ,'Reparation' , '2006-02-23 09:00:00' , '2006-02-24 18:00:00' , 10000);
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.interventions;
+ num_interventions | num_vehicule | type_intervention | date_debinterv | date_fininterv | cout_initerv
+-------------------+--------------+-------------------+----------------+----------------+--------------
+                 1 |            1 | Reparation        | 2006-02-25     | 2006-02-26     | 30000
+                 2 |            2 | Reparation        | 2006-02-23     | 2006-02-24     | 10000
+				 
+				 
+				 
+				 
+*****************************************
+*****************************************
+*****************************************
+
+
+
+
+m_interventions=# drop table mecaniques.intervenants;
+DROP TABLE
+m_interventions=# CREATE TABLE mecaniques.intervenants(num_interventions INTEGER REFERENCES mecaniques.interventions(num_interventions),num_employe INTEGER REFERENCES mecaniques.employe(num_employe),date_debut DATE NOT NULL , date_fin DATE NOT NULL , PRIMARY KEY (num_interventions , num_employe));
+CREATE TABLE
+m_interventions=# INSERT INTO mecaniques.intervenants(num_interventions , num_employe , date_debut , date_fin) VALUES(1 ,55 , '2006-02-28 09:00:00' , '2006-02-28 12:00:00');
+INSERT 0 1
+m_interventions=# INSERT INTO mecaniques.intervenants(num_interventions , num_employe , date_debut , date_fin) VALUES(2 ,53 , '2006-02-26 09:00:00' , '2006-02-26 12:00:00');
+INSERT 0 1
+m_interventions=# SELECT * FROM mecaniques.intervenants;
+ num_interventions | num_employe | date_debut |  date_fin
+-------------------+-------------+------------+------------
+                 1 |          55 | 2006-02-28 | 2006-02-28
+                 2 |          53 | 2006-02-26 | 2006-02-26

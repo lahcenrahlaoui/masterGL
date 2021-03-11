@@ -1,0 +1,35 @@
+var inserer = function(tableau, indice_correct, valeur) {
+    for(var j = indice_correct; j >= 0 && tableau[j] > valeur; j--){
+		tableau[j + 1] = tableau[j];
+	}   
+    tableau[j + 1] = valeur; 
+};
+
+var triInsertion = function(tableau) {
+    for (var i = 1; i < tableau.length; i++) {
+        inserer(tableau, i-1, tableau[i]);
+    }
+    
+    console.log("tableau after sorting: " + tableau);
+};
+
+var tab = [2, 1, 45, 6, 8, 52, 5, 15, -10, 0, 25];
+console.log("tableau before sorting: " + tab);
+triInsertion(tab);
+======================================
+var triInsertion = function(tableau) {
+var v;
+    for (var i = 1; i < tableau.length; i++) {
+	v = tableau[i];
+	for(var j = i-1; j >= 0 && tableau[j] > v; j--){
+		tableau[j + 1] = tableau[j];
+	}   
+    	tableau[j + 1] = v;
+	
+    }
+console.log("tableau after sorting: " + tableau);
+};
+
+var tab = [2, 1, 45, 6, 8, 52, 5, 15, -10, 0, 25];
+console.log("tableau before sorting: " + tab);
+triInsertion(tab);

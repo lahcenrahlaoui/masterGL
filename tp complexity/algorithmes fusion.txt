@@ -1,0 +1,60 @@
+function tri_fusion(tableau,p,r){
+  if(p < r){
+    var q = Math.floor((p + r)/2);
+    tri_fusion(tableau, p, q);
+ 
+    tri_fusion(tableau, q+1, r);
+    fusion(tableau, p, q, r);
+  }
+}
+
+var fusion = function(tableau, p, q, r) {
+  var moitierDown = [];
+  var moitierUp = [];
+
+  var k = p;
+  var i;
+  var j;
+  for (i = 0; k <= q; i++, k++) {
+    moitierDown[i] = tableau[k];
+  }
+  for (j = 0; k <= r; j++, k++) {
+    moitierUp[j] = tableau[k];
+  }
+  k = p;
+  i = 0;
+  j = 0;
+
+
+  while (i < moitierDown.length && j < moitierUp.length) {
+    if (moitierDown[i] < moitierUp[j]) {
+      tableau[k] = moitierDown[i];
+      i++;
+    } else {
+      tableau[k] = moitierUp[j];
+      j++;
+    } 
+    k++;
+  }
+  
+  while (i < moitierDown.length) {
+    tableau[k] = moitierDown[i];
+    k++;
+    i++;
+  }
+  while (j < moitierUp.length){
+    tableau[k] = moitierUp[j];
+    k++;
+    j++;
+  }
+};
+
+var tableau = [-5, 15, -10, 0, 25, 5, 1, 2];
+console.log("tableau before sorting: " + tableau);
+tri_fusion(tableau, 0, tableau.length-1);
+console.log("tableau after sorting: " + tableau);
+
+var tableau = [3, 7, 12, 14, 2, 6, 9, 11];
+console.log("tableau before merging: " + tableau);
+fusion(tableau, 0, Math.floor((0 + tableau.length-1) / 2), tableau.length-1);
+console.log("tableau after merging: " + tableau);
