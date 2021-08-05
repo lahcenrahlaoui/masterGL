@@ -1,0 +1,103 @@
+
+:root {
+  --grid-cols: 1;
+  --grid-rows: 1;
+}
+*{
+  padding:0;
+  margin: 0;
+  
+}
+body{
+  /* background:rgba(0,255,255, 0.5); */
+}
+#myContainer {
+  
+  display: grid;
+  grid-gap: 0em;
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+}
+.swal-text{
+  font-size: 21px;
+  color: #444;
+}
+
+.father-container{
+
+  border: 2px solid rgba(0,0,0, 0.35);
+  border-radius: 15px;
+  position:fixed;
+  box-shadow: 0.5px 0.5px 20px 0.3px rgba(0,0,0, 0.1);
+}
+
+.grid-item:hover{
+background-color: rgba(0,0,0, 0.05);
+}
+
+
+.grid-item {
+  padding: 0;
+  margin: 0.4px;
+  margin-top: 2px ;
+  margin-left: 1.5px ;
+  border: 1px solid rgba(0,0,0, 0.5);
+  width: 60px;
+  height: 60px;
+}
+
+.big-container{
+  display: flex;
+  width: 50vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+
+.listview{ 
+  
+  padding: 40px;
+  width: 35vw;
+  min-height: 150px;
+  height: calc(auto + 250px);
+  
+  border: 2px solid rgba(0,0,0, 0.5);
+  box-shadow: 1px 2px 40px 1px rgba(0,0,0, 0.5);
+
+  display: flex;
+
+  justify-content: center;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.text-view{
+  width: 30vw;
+  height: 30px;
+  padding: 5px;
+  border: 2px solid rgba(0,0,0, 0.5);
+  background-color: rgba(0,0,0, 0.1);
+  font-size: 22px;
+  display: flex ;
+  justify-content: center;
+}
+.list-item{
+  background-color: rgba(254,18,18,0.7);
+  padding: 10px;
+  font-size: 22px;
+  margin: 10px;
+
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+.parent{
+  display: flex;
+}

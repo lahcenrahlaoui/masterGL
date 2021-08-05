@@ -33,6 +33,15 @@ function makeVamp(square,widthAndHeight) {
       }
     }
   }
+  // for make border for the elements selected in the function 
+  border();
+  function border(){
+    // for radius 
+    document.getElementById('a0').style.borderTopLeftRadius = '10px';
+    document.getElementById('a'+(matrix - 1)).style.borderTopRightRadius = '10px';
+    document.getElementById(String.fromCharCode(97 + matrix - 1)+'0').style.borderBottomLeftRadius = '10px';
+    document.getElementById(String.fromCharCode( 97 + matrix - 1)+( matrix - 1)).style.borderBottomRightRadius = '10px';
+  }
 }
 
 // for set width and height for the father 
@@ -89,9 +98,15 @@ var equalMaxTries;
 
 start();
 async function start(){
-  matrix = 8 ;
-  widthAndHeight = ((8 * 60 )+ (8 * 5 )) + 'px';
-  makeVamp(8 , widthAndHeight);
+  do{
+    var getValueFromWindowSwal;
+    await swal("Enter A Number Between 5 And 9 :", {content: "input", className: "swal-text" }).then((value) => { getValueFromWindowSwal = `${value}`; });
+    
+    matrix = parseInt(getValueFromWindowSwal);
+    widthAndHeight = ((matrix * 60 )+ (matrix * 5 )) + 'px';
+  }while(matrix > 9 || matrix < 5);
+
+  makeVamp(matrix , widthAndHeight);
   initialize();
 }
 
@@ -146,16 +161,49 @@ function makeArrays(){
   }
 }
 
+// setNumberOfBoats with condition 
+function setNumberOfBoats(){
+  if(matrix <= 5){
+    return 2;
+  }
+  else if(matrix <= 7){
+    return 3;
+  }
+  else if(matrix <= 10){
+    return 4;
+  }
+  else{
+    return 5;
+  }
+}
+
+// setMaxTries with condition 
+function setMaxTries(){
+  if(matrix <= 5){
+    return 17;
+  }
+  else if(matrix <= 6){
+    return 23;
+  }
+  else if(matrix <= 7){
+    return 31;
+  }
+  else if(matrix <= 8){
+    return 44;
+  }
+  else {
+    return 63;
+  }
+}
 
 // initialize function for set variable in the begining of excution 
 function initialize(){
   columnsLetters = [] ;
   rows           = [] ;
   columns        = [] ;
-  numberOfBoats  = 4;
-  maxTries       = 45;
+  numberOfBoats  = setNumberOfBoats();
+  maxTries       = setMaxTries();
   boatsDrowned   = 0  ; 
-  equalMaxTries  = 0  ; 
   chosenBoats    = [] ;
   makeArrays();
   for(var i = 0 ; i < numberOfBoats ; i++ ){
@@ -165,6 +213,7 @@ function initialize(){
   listView       = document.getElementById("listview");  // Find the element
   listConter     = 0  ;
   listClicked    = [] ;
+  equalMaxTries  = 0
 }
 
 // this function will start when the mouse clicked with any click 
@@ -213,6 +262,16 @@ $(document).ready(function(){
           if(thisItemDoesNotExist){
                 if(theSelectedItem.length == 2){
                   checkValue(theSelectedItem);
+                  let list = document.createElement("div");
+                  listView.appendChild(list).className = "list-item";
+                  var listItem = document.getElementsByClassName("list-item");
+                  listItem[listConter].setAttribute("id","myId"+listConter);
+                  var theListItemSelected = document.getElementById("myId"+listConter);
+                
+                  upperCaseIds = theSelectedItem.charAt(0).toUpperCase() + theSelectedItem.charAt(1)
+
+                  theListItemSelected.innerHTML = upperCaseIds;
+                  listConter++;            
                 }
               }
         // this will display when the player wants to click but the game has ended 
@@ -327,17 +386,24 @@ function checkValue(idSelected){
     // for add the image almost.png it means you got a point in side of the boat 
     if(changeStyleBoolean){
       document.getElementById(idSelected).style.background = 'rgba(255,69,0,0.7)';
+      document.getElementById(idSelected).style.backgroundImage = "url('almost.png')";
       setBackground();
     }
     // for add  the image fault.png it means you got a point far from the boat 
     else{
-      document.getElementById(idSelected).style.background = 'rgba(255,0,0,1)';
+      document.getElementById(idSelected).style.background = 'rgba(254,18,18,0.7)';
+      document.getElementById(idSelected).style.backgroundImage = "url('fault.png')";
       setBackground();
     }
     // set images as a background " almost and fault " with no-repeat and set the width and the height and borders 
     function setBackground(){
       document.getElementById(idSelected).style.backgroundRepeat = "no-repeat";
       document.getElementById(idSelected).style.backgroundSize = "60px 60px";
+      // for radius 
+      document.getElementById('a0').style.borderTopLeftRadius = '10px';
+      document.getElementById('a'+(matrix - 1)).style.borderTopRightRadius = '10px';
+      document.getElementById(String.fromCharCode(97 + matrix - 1)+'0').style.borderBottomLeftRadius = '10px';
+      document.getElementById(String.fromCharCode( 97 + matrix - 1)+( matrix - 1)).style.borderBottomRightRadius = '10px';
     }
   }
 

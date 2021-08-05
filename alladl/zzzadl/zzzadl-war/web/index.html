@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .parent{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 130px;
+            }
+            .list{
+                 list-style: none;
+                font-size: 22px;
+                 cursor: pointer;
+                padding: 6px;
+                margin: 20px;
+            }
+            .link{
+                text-transform: uppercase;
+                color: black;
+                text-decoration: none;
+                transition: 0.3s color;
+            }
+            .link:hover{
+                color: red;
+                transition: 0.3s color;
+            }
+            .class-h2{
+                margin-top: -30px;
+                margin-bottom: 30px;
+            }
+            .unorderd-list{
+                margin-left: 10px
+            }
+        </style>
+    </head>
+    <body>
+        <div class="parent">
+            <div>
+                <center><h2 class="class-h2"> Choose One Of Those </h2></center>
+                <ul class="unorderd-list">
+                    <li class="list"> <a class="link" href="insert.jsp"> insert </a></li>
+                    <li class="list"> <a class="link" href="delete.jsp"> delete </a></li>
+                    <li class="list"> <a class="link" href="update.jsp"> update </a></li>
+                    <li class="list"> <a class="link" href="search.jsp"> select </a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -4,8 +4,8 @@ var container = document.getElementById("myContainer");
 // function makeVamp , this function get two parameters , the first of them is for the number of rows and columns 
 // and the second widthAndHright for set width and height for each one of myContainer and father-contaner 
 function makeVamp(square,widthAndHeight) {
-  document.getElementById("myContainer").style.width = widthAndHeight;
-  document.getElementById("myContainer").style.height = widthAndHeight;
+  document.getElementById(container).style.width = widthAndHeight;
+  document.getElementById(container).style.height = widthAndHeight;
 
   document.getElementById('father-container').style.width = widthAndHeight;
   document.getElementById('father-container').style.height = widthAndHeight;
@@ -33,6 +33,15 @@ function makeVamp(square,widthAndHeight) {
       }
     }
   }
+  // for make border for the elements selected in the function 
+  border();
+  function border(){
+    // for radius 
+    document.getElementById('a0').style.borderTopLeftRadius = '10px';
+    document.getElementById('a'+(matrix - 1)).style.borderTopRightRadius = '10px';
+    document.getElementById(String.fromCharCode(97 + matrix - 1)+'0').style.borderBottomLeftRadius = '10px';
+    document.getElementById(String.fromCharCode( 97 + matrix - 1)+( matrix - 1)).style.borderBottomRightRadius = '10px';
+  }
 }
 
 // for set width and height for the father 
@@ -46,32 +55,21 @@ var theCharCase;
 var columnsLetters;
 var rows;
 var columns;
-// numberOfBoats ( number from the computer set it in the begging)
 var numberOfBoats ;
-// maxTries has a realation with the number of rows and columns 
 var maxTries;
 
-// the boats chosen in the begging of the game by the computer
+
 var chosenBoats ;
-// just a variable for chosenBoats
+
 var xs ;
 var theSelectedItem;
 
-// listView for the list in the right of the page 
 var listView;
-// number of elements incremented by one 
 var listConter ;
-
-// we save every element that we have click on it 
-var listClicked ;
-// thisItemDoesNotExist , when we select an item we will save it in a list "listClicked", so we check the new element with the old elements if it was not in the list then we add it and thisItemDoesNotExist will stay true , but when we found that element in the list it gonna be false , and we will use this after in condition 
 var thisItemDoesNotExist ;
+var listClicked ;
 
-// change the ids from lowercase to uppercase 
 var upperCaseIds;
-
-// it means how did this player click in the board
-var equalMaxTries;
 
 // start from here call makeVamp then call initialize 
   //* makeVamp will create new divs and gave them a class name then call the intern function makeIds and the function border 
@@ -89,28 +87,36 @@ var equalMaxTries;
 
 start();
 async function start(){
-  matrix = 8 ;
-  widthAndHeight = ((8 * 60 )+ (8 * 5 )) + 'px';
-  makeVamp(8 , widthAndHeight);
+  do{
+    var getValueFromWindowSwal;
+    await swal("Enter A Number Between 5 And 9 :", {content: "input", className: "swal-text" }).then((value) => { getValueFromWindowSwal = `${value}`; });
+    
+    matrix = parseInt(getValueFromWindowSwal);
+    widthAndHeight = ((matrix * 60 )+ (matrix * 5 )) + 'px';
+  }while(matrix > 9 || matrix < 5);
+
+  makeVamp(matrix , widthAndHeight);
   initialize();
 }
 
-
-// this function will not end until columns length will the same as numberOfBoats
 function makeArrays(){
+  // this function will not end until columns length will the same as numberOfBoats
   for(var i = 0 ; rows.length < numberOfBoats ; i++){
     generateArray(rows);
   }
+  
   // this function will not end until columns length will the same as numberOfBoats
   for(var i = 0 ; columns.length < numberOfBoats ; i++){
     generateArray(columns);
   }
+
   // this function with make a random array with conditions 
   function generateArray(arr){
     // the smallest random number can we get 
     var min = 0;
     // the biggest random number can we get 
     var max = matrix - 1;
+
     bool = true;
     // save the value in a random variable 
     random = Math.floor(Math.random()*(max-min+1)+min);
@@ -119,6 +125,7 @@ function makeArrays(){
       arr.push(random);
     }
     // if there id an element in the arr then go into this else and make a loop with test , the previous elements and the new element , if this element was there then the function will generate another number until got a new number not in the list 
+
     else
     {
       for(var j = 0 ; j < arr.length ; j++){    
@@ -135,9 +142,8 @@ function makeArrays(){
 
   // when we get random number we will turn them to characters with this function and put them in the list that has the name columnsLetters
 
-  // then now we have columnsLetters list for the latters and row for the numbers 
+  // then now we have columnsLetters list for the latters and 
   changeToIDs(columns);
-  // changeToIDs it change the random number to a charachter 
   function changeToIDs(arr){
     for (var i = 0; i< arr.length; i++) {
       theCharCase = String.fromCharCode(arr[i]+97);
@@ -146,25 +152,58 @@ function makeArrays(){
   }
 }
 
+// setNumberOfBoats with condition 
+function setNumberOfBoats(){
+  if(matrix <= 5){
+    return 2;
+  }
+  else if(matrix <= 7){
+    return 3;
+  }
+  else if(matrix <= 10){
+    return 4;
+  }
+  else{
+    return 5;
+  }
+}
+
+// setMaxTries with condition 
+function setMaxTries(){
+  if(matrix <= 5){
+    return 17;
+  }
+  else if(matrix <= 6){
+    return 23;
+  }
+  else if(matrix <= 7){
+    return 31;
+  }
+  else if(matrix <= 8){
+    return 44;
+  }
+  else {
+    return 63;
+  }
+}
 
 // initialize function for set variable in the begining of excution 
 function initialize(){
-  columnsLetters = [] ;
-  rows           = [] ;
-  columns        = [] ;
-  numberOfBoats  = 4;
-  maxTries       = 45;
-  boatsDrowned   = 0  ; 
-  equalMaxTries  = 0  ; 
-  chosenBoats    = [] ;
+  columnsLetters = [];
+  rows = [];
+  columns = [];
+  numberOfBoats = setNumberOfBoats();
+  maxTries = setMaxTries();
+  boatsDrowned = 0 ; 
+  chosenBoats = [];
   makeArrays();
   for(var i = 0 ; i < numberOfBoats ; i++ ){
     xs = columnsLetters[i] + rows[i];
     chosenBoats.push(xs);
   }
-  listView       = document.getElementById("listview");  // Find the element
-  listConter     = 0  ;
-  listClicked    = [] ;
+  listView = document.getElementById("listview");  // Find the element
+  listConter = 0;
+  listClicked =[];
 }
 
 // this function will start when the mouse clicked with any click 
@@ -213,6 +252,16 @@ $(document).ready(function(){
           if(thisItemDoesNotExist){
                 if(theSelectedItem.length == 2){
                   checkValue(theSelectedItem);
+                  let list = document.createElement("div");
+                  listView.appendChild(list).className = "list-item";
+                  var listItem = document.getElementsByClassName("list-item");
+                  listItem[listConter].setAttribute("id","myId"+listConter);
+                  var theListItemSelected = document.getElementById("myId"+listConter);
+                
+                  upperCaseIds = theSelectedItem.charAt(0).toUpperCase() + theSelectedItem.charAt(1)
+
+                  theListItemSelected.innerHTML = upperCaseIds;
+                  listConter++;            
                 }
               }
         // this will display when the player wants to click but the game has ended 
@@ -236,10 +285,11 @@ $(document).ready(function(){
       }
     });
 });
-
+var equalMaxTries = 0 ;
 function checkValue(idSelected){
   var touchArray = [];
   var didNotDrown = true;
+
 
   for(var i = 0 ; i < numberOfBoats ; i++ ){
     if (idSelected == chosenBoats[i]){
@@ -327,19 +377,27 @@ function checkValue(idSelected){
     // for add the image almost.png it means you got a point in side of the boat 
     if(changeStyleBoolean){
       document.getElementById(idSelected).style.background = 'rgba(255,69,0,0.7)';
+      document.getElementById(idSelected).style.backgroundImage = "url('almost.png')";
       setBackground();
     }
     // for add  the image fault.png it means you got a point far from the boat 
     else{
-      document.getElementById(idSelected).style.background = 'rgba(255,0,0,1)';
+      document.getElementById(idSelected).style.background = 'rgba(254,18,18,0.7)';
+      document.getElementById(idSelected).style.backgroundImage = "url('fault.png')";
       setBackground();
     }
     // set images as a background " almost and fault " with no-repeat and set the width and the height and borders 
     function setBackground(){
       document.getElementById(idSelected).style.backgroundRepeat = "no-repeat";
       document.getElementById(idSelected).style.backgroundSize = "60px 60px";
+      // for radius 
+      document.getElementById('a0').style.borderTopLeftRadius = '10px';
+      document.getElementById('a'+(matrix - 1)).style.borderTopRightRadius = '10px';
+      document.getElementById(String.fromCharCode(97 + matrix - 1)+'0').style.borderBottomLeftRadius = '10px';
+      document.getElementById(String.fromCharCode( 97 + matrix - 1)+( matrix - 1)).style.borderBottomRightRadius = '10px';
     }
   }
+  
 
   // timeOut function  when the player run out of his clicks this swal gonna display a message 
   setTimeout(function() { 
