@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="500.0" prefWidth="625.0">
+         <children>
+            <Button fx:id="verser" layoutX="495.0" layoutY="226.0" mnemonicParsing="false" text="Verser" />
+            <Label fx:id="log" layoutX="102.0" layoutY="282.0" prefHeight="35.0" prefWidth="373.0" text="Log : ">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <TextField fx:id="text" layoutX="113.0" layoutY="226.0" promptText="example: 200" />
+            <Button fx:id="retirer" layoutX="495.0" layoutY="269.0" mnemonicParsing="false" text="Retirer" />
+            <Button fx:id="avoire" layoutX="495.0" layoutY="317.0" mnemonicParsing="false" text="Avoire" />
+            <Button fx:id="connection" layoutX="468.0" layoutY="367.0" mnemonicParsing="false" text="Connection" />
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>
